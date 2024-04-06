@@ -1,18 +1,17 @@
 {
-  "name": "sponsorkit",
-  "version": "0.9.3",
-  "packageManager": "pnpm@8.12.1",
+  "name": "@mooncellwiki/sponsorkit",
+  "version": "0.10.0",
+  "packageManager": "pnpm@8.15.6",
   "description": "Toolkit for generating sponsors images",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "author": "StarHeartHunt <starheart233@gmail.com>",
   "license": "MIT",
-  "funding": "https://github.com/sponsors/antfu",
-  "homepage": "https://github.com/antfu/sponsorkit#readme",
+  "homepage": "https://github.com/MooncellWiki/sponsorkit#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/antfu/sponsorkit.git"
+    "url": "git+https://github.com/MooncellWiki/sponsorkit.git"
   },
   "bugs": {
-    "url": "https://github.com/antfu/sponsorkit/issues"
+    "url": "https://github.com/MooncellWiki/sponsorkit/issues"
   },
   "keywords": [
     "sponsors",
@@ -49,27 +48,27 @@
     "consola": "^3.2.3",
     "csv-parse": "^5.5.5",
     "datauri": "^4.1.0",
-    "dotenv": "^16.3.1",
-    "node-html-parser": "^6.1.11",
-    "ofetch": "^1.3.3",
+    "dotenv": "^16.4.5",
+    "node-html-parser": "^6.1.13",
+    "ofetch": "^1.3.4",
     "picocolors": "^1.0.0",
-    "sharp": "^0.33.0",
-    "unconfig": "^0.3.11",
+    "sharp": "^0.33.3",
+    "unconfig": "^0.3.12",
     "yargs": "^17.7.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.4.6",
+    "@antfu/eslint-config": "^2.12.2",
     "@antfu/ni": "^0.21.12",
     "@antfu/utils": "^0.7.7",
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.12.5",
     "@types/yargs": "^17.0.32",
-    "bumpp": "^9.2.1",
-    "eslint": "^8.56.0",
-    "esno": "^4.0.0",
+    "bumpp": "^9.4.0",
+    "eslint": "^8.57.0",
+    "esno": "^4.7.0",
     "jiti": "^1.21.0",
-    "typescript": "^5.3.3",
+    "typescript": "^5.4.4",
     "unbuild": "^2.0.0",
-    "vite": "^5.0.10",
-    "vitest": "^1.0.4"
+    "vite": "^5.2.8",
+    "vitest": "^1.4.0"
   }
 }
