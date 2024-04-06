@@ -106,6 +106,11 @@ export async function loadConfig(inlineConfig: SponsorkitConfig = {}) {
       ...config.afdian,
       ...inlineConfig.afdian,
     },
+    mooncell: {
+      ...env.mooncell,
+      ...config.mooncell,
+      ...inlineConfig.mooncell,
+    },
   } as Required<SponsorkitConfig>
 
   return resolved

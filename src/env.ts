@@ -34,6 +34,9 @@ export function loadEnv(): Partial<SponsorkitConfig> {
       exechangeRate: Number.parseFloat(process.env.SPONSORKIT_AFDIAN_EXECHANGERATE || process.env.AFDIAN_EXECHANGERATE || '0') || undefined,
       webAuthToken: process.env.SPONSORKIT_AFDIAN_WEB_AUTH_TOKEN || process.env.AFDIAN_WEB_AUTH_TOKEN,
     },
+    mooncell: {
+      path: process.env.SPONSORKIT_MOONCELL_PATH || process.env.MOONCELL_PATH,
+    },
     outputDir: process.env.SPONSORKIT_DIR,
   }
 

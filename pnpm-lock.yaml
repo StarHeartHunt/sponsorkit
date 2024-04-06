@@ -11,6 +11,9 @@ importers:
       consola:
         specifier: ^3.2.3
         version: 3.2.3
+      csv-parse:
+        specifier: ^5.5.5
+        version: 5.5.5
       datauri:
         specifier: ^4.1.0
         version: 4.1.0
@@ -2050,6 +2053,10 @@ packages:
     engines: {node: '>=4'}
     hasBin: true
     dev: true
+
+  /csv-parse@5.5.5:
+    resolution: {integrity: sha512-erCk7tyU3yLWAhk6wvKxnyPtftuy/6Ak622gOO7BCJ05+TYffnPCJF905wmOQm+BpkX54OdAl8pveJwUdpnCXQ==}
+    dev: false
 
   /datauri@4.1.0:
     resolution: {integrity: sha512-y17kh32+I82G+ED9MNWFkZiP/Cq/vO1hN9+tSZsT9C9qn3NrvcBnh7crSepg0AQPge1hXx2Ca44s1FRdv0gFWA==}

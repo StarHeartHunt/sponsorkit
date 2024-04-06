@@ -1,8 +1,9 @@
 import type { Provider, ProviderName, SponsorkitConfig } from '../types'
-import { GitHubProvider } from './github'
-import { PatreonProvider } from './patreon'
-import { OpenCollectiveProvider } from './opencollective'
 import { AfdianProvider } from './afdian'
+import { GitHubProvider } from './github'
+import { MooncellProvider } from './mooncell'
+import { OpenCollectiveProvider } from './opencollective'
+import { PatreonProvider } from './patreon'
 
 export * from './github'
 
@@ -11,6 +12,7 @@ export const ProvidersMap = {
   patreon: PatreonProvider,
   opencollective: OpenCollectiveProvider,
   afdian: AfdianProvider,
+  mooncell: MooncellProvider,
 }
 
 export function guessProviders(config: SponsorkitConfig) {
@@ -26,6 +28,9 @@ export function guessProviders(config: SponsorkitConfig) {
 
   if (config.afdian && config.afdian.userId && config.afdian.token)
     items.push('afdian')
+
+  if (config.mooncell && config.mooncell.path)
+    items.push('mooncell')
 
   // fallback
   if (!items.length)
