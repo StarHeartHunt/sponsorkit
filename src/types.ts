@@ -60,7 +60,7 @@ export interface Sponsorship {
 
 export type OutputFormat = 'svg' | 'png' | 'json'
 
-export type ProviderName = 'github' | 'patreon' | 'opencollective' | 'afdian'
+export type ProviderName = 'github' | 'patreon' | 'opencollective' | 'afdian' | 'mooncell'
 
 export interface ProvidersConfig {
   github?: {
@@ -124,10 +124,10 @@ export interface ProvidersConfig {
      */
     githubHandle?: string
     /*
-    * The type of your account. (`collective` or `individual`)
-    *
-    * Will read from `SPONSORKIT_OPENCOLLECTIVE_TYPE` environment variable if not set.
-    */
+     * The type of your account. (`collective` or `individual`)
+     *
+     * Will read from `SPONSORKIT_OPENCOLLECTIVE_TYPE` environment variable if not set.
+     */
     type?: string
   }
   afdian?: {
@@ -162,6 +162,9 @@ export interface ProvidersConfig {
      * @deprecated It's not recommended set this value directly, pass from env or use `.env` file.
      */
     webAuthToken?: string
+  }
+  mooncell?: {
+    path?: string
   }
 }
 
