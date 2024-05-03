@@ -1,5 +1,5 @@
 import type { Buffer } from 'node:buffer'
-import type { SvgComposer } from './svg'
+import type { SvgComposer } from './processing/svg'
 
 export interface BadgePreset {
   boxWidth: number
@@ -19,6 +19,12 @@ export interface BadgePreset {
   classes?: string
 }
 
+export interface TierPartition {
+  monthlyDollars: number
+  tier: Tier
+  sponsors: Sponsorship[]
+}
+
 export interface Provider {
   name: string
   fetchSponsors: (config: SponsorkitConfig) => Promise<Sponsorship[]>
@@ -29,6 +35,7 @@ export interface Sponsor {
   login: string
   name: string
   avatarUrl: string
+  avatarBuffer?: string
   avatarUrlHighRes?: string
   avatarUrlMediumRes?: string
   avatarUrlLowRes?: string
@@ -161,20 +168,71 @@ export interface ProvidersConfig {
   }
 }
 
-export interface SponsorkitConfig extends ProvidersConfig {
+export interface SponsorkitRenderOptions {
   /**
-   * @deprecated use `github.login` instead
+   * Name of exported files
+   *
+   * @default 'sponsors'
    */
-  login?: string
-  /**
-   * @deprecated use `github.token` instead
-   */
-  token?: string
+  name?: string
 
   /**
-   * @default auto detect based on the config provided
+   * Renderer to use
+   *
+   * @default 'tiers'
    */
-  providers?: ProviderName[]
+  renderer?: 'tiers' | 'circles'
+
+  /**
+   * Output formats
+   *
+   * @default ['json', 'svg', 'png']
+   */
+  formats?: OutputFormat[]
+
+  /**
+   * Compose the SVG
+   */
+  customComposer?: (composer: SvgComposer, sponsors: Sponsorship[], config: SponsorkitConfig) => PromiseLike<void> | void
+
+  /**
+   * Filter of sponsorships to render in the final image.
+   */
+  filter?: (sponsor: Sponsorship, all: Sponsorship[]) => boolean | void
+
+  /**
+   * Tiers
+   *
+   * Only effective when using `tiers` renderer.
+   */
+  tiers?: Tier[]
+
+  /**
+   * Options for rendering circles
+   *
+   * Only effective when using `circles` renderer.
+   */
+  circles?: CircleRenderOptions
+
+  /**
+   * Width of the image.
+   *
+   * @default 800
+   */
+  width?: number
+
+  /**
+   * Padding of image container
+   */
+  padding?: {
+    top?: number
+    bottom?: number
+  }
+
+  /**
+   * Inline CSS of generated SVG
+   */
+  svgInlineCSS?: string
 
   /**
    * Whether to display the private sponsors
@@ -192,73 +250,36 @@ export interface SponsorkitConfig extends ProvidersConfig {
   includePastSponsors?: boolean
 
   /**
-   * By pass cache
-   */
-  force?: boolean
-
-  /**
-   * Directory of output files.
-   *
-   * @default './sponsorkit'
-   */
-  outputDir?: string
-
-  /**
-   * Name of exported files
-   *
-   * @default 'sponsors'
-   */
-  name?: string
-
-  /**
-   * Output formats
-   *
-   * @default ['json', 'svg', 'png']
-   */
-  formats?: OutputFormat[]
-
-  /**
-   * Hook to modify sponsors data before fetching the avatars.
-   */
-  onSponsorsFetched?: (sponsors: Sponsorship[], provider: ProviderName | string) => PromiseLike<void | Sponsorship[]> | void | Sponsorship[]
-
-  /**
    * Hook to modify sponsors data before rendering.
    */
-  onSponsorsReady?: (sponsors: Sponsorship[]) => PromiseLike<void | Sponsorship[]> | void | Sponsorship[]
+  onBeforeRenderer?: (sponsors: Sponsorship[]) => PromiseLike<void | Sponsorship[]> | void | Sponsorship[]
 
   /**
    * Hook to get or modify the SVG before writing.
    */
   onSvgGenerated?: (svg: string) => PromiseLike<string | void | undefined | null> | string | void | undefined | null
+}
+
+export interface SponsorkitConfig extends ProvidersConfig, SponsorkitRenderOptions {
+  /**
+   * @deprecated use `github.login` instead
+   */
+  login?: string
 
   /**
-   * Compose the SVG
+   * @deprecated use `github.token` instead
    */
-  customComposer?: (composer: SvgComposer, sponsors: Sponsorship[], config: SponsorkitConfig) => PromiseLike<void> | void
+  token?: string
 
   /**
-   * Filter of sponsorships to render in the final image.
+   * @default auto detect based on the config provided
    */
-  filter?: (sponsor: Sponsorship, all: Sponsorship[]) => boolean | void
+  providers?: ProviderName[]
 
   /**
-   * Tiers
+   * By pass cache
    */
-  tiers?: Tier[]
-
-  /**
-   * Width of the image.
-   *
-   * @default 700
-   */
-  width?: number
-
-  /**
-   * Url to fallback avatar.
-   * Setting false to disable fallback avatar.
-   */
-  fallbackAvatar?: string | false | Buffer | Promise<Buffer>
+  force?: boolean
 
   /**
    * Path to cache file
@@ -268,17 +289,71 @@ export interface SponsorkitConfig extends ProvidersConfig {
   cacheFile?: string
 
   /**
-   * Padding of image container
+   * Directory of output files.
+   *
+   * @default './sponsorkit'
    */
-  padding?: {
-    top?: number
-    bottom?: number
-  }
+  outputDir?: string
 
   /**
-   * Inline CSS of generated SVG
+   * Hook to modify sponsors data for each provider.
    */
-  svgInlineCSS?: string
+  onSponsorsFetched?: (sponsors: Sponsorship[], provider: ProviderName | string) => PromiseLike<void | Sponsorship[]> | void | Sponsorship[]
+
+  /**
+   * Hook to modify merged sponsors data before fetching the avatars.
+   */
+  onSponsorsAllFetched?: (sponsors: Sponsorship[]) => PromiseLike<void | Sponsorship[]> | void | Sponsorship[]
+
+  /**
+   * Hook to modify sponsors data before rendering.
+   */
+  onSponsorsReady?: (sponsors: Sponsorship[]) => PromiseLike<void | Sponsorship[]> | void | Sponsorship[]
+
+  /**
+   * Url to fallback avatar.
+   * Setting false to disable fallback avatar.
+   */
+  fallbackAvatar?: string | false | Buffer | Promise<Buffer>
+
+  /**
+   * Configs for multiple renders
+   */
+  renders?: SponsorkitRenderOptions[]
+}
+
+export type SponsorkitMainConfig = Omit<SponsorkitConfig, keyof SponsorkitRenderOptions>
+
+export interface SponsorkitRenderer {
+  name: string
+  renderSVG: (config: Required<SponsorkitRenderOptions>, sponsors: Sponsorship[]) => Promise<string>
+}
+
+export interface CircleRenderOptions {
+  /**
+   * Min radius for sponsors
+   *
+   * @default 10
+   */
+  radiusMin?: number
+  /**
+   * Max radius for sponsors
+   *
+   * @default 300
+   */
+  radiusMax?: number
+  /**
+   * Radius for past sponsors
+   *
+   * @default 5
+   */
+  radiusPast?: number
+  /**
+   * Custom function to calculate the weight of the sponsor.
+   *
+   * When provided, `radiusMin`, `radiusMax` and `radiusPast` will be ignored.
+   */
+  weightInterop?: (sponsor: Sponsorship, maxAmount: number) => number
 }
 
 export interface Tier {

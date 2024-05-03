@@ -73,6 +73,7 @@ export default defineConfig({
 
   // Rendering configs
   width: 800,
+  renderer: 'tiers' | 'circles',
   formats: ['json', 'svg', 'png'],
   tiers: [
     // Past sponsors, currently only supports GitHub
@@ -119,11 +120,26 @@ const sponsors = await fetchSponsors(token, login)
 
 Check the type definition or source code for more utils available.
 
-## Sponsors
+## Renderers
+
+We provide two renderers built-in:
+
+- `tiers`: Render sponsors in tiers.
+- `circles`: Render sponsors in packed circles.
+
+### Tiers Renderer
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg">
     <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'/>
+  </a>
+</p>
+
+### Circles Renderer
+
+<p align="center">
+  <a href="https://cdn.jsdelivr.net/gh/antfu/static/sponsors.circles.svg">
+    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.circles.svg'/>
   </a>
 </p>
 
