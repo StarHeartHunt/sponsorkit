@@ -60,7 +60,7 @@ export interface Sponsorship {
 
 export type OutputFormat = 'svg' | 'png' | 'json'
 
-export type ProviderName = 'github' | 'patreon' | 'opencollective' | 'afdian' | 'mooncell'
+export type ProviderName = 'github' | 'patreon' | 'opencollective' | 'afdian' | 'polar' | 'mooncell'
 
 export interface ProvidersConfig {
   github?: {
@@ -154,14 +154,17 @@ export interface ProvidersConfig {
      * @default 6.5
      */
     exechangeRate?: number
+  }
+  polar?: {
     /**
-     * Afdian Web Token got from document.cookie.
+     * Polar token that have access to your sponsorships.
      *
-     * Will read from `SPONSORKIT_AFDIAN_TOKEN` environment variable if not set.
+     * Will read from `SPONSORKIT_POLAR_TOKEN` environment variable if not set.
      *
+     * @see https://polar.sh/settings
      * @deprecated It's not recommended set this value directly, pass from env or use `.env` file.
      */
-    webAuthToken?: string
+    token?: string
   }
   mooncell?: {
     path?: string

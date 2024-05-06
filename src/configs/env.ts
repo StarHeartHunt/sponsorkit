@@ -37,6 +37,9 @@ export function loadEnv(): Partial<SponsorkitConfig> {
     mooncell: {
       path: process.env.SPONSORKIT_MOONCELL_PATH || process.env.MOONCELL_PATH,
     },
+    polar: {
+      token: process.env.SPONSORKIT_POLAR_TOKEN || process.env.POLAR_TOKEN,
+    },
     outputDir: process.env.SPONSORKIT_DIR,
   }
 

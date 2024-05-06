@@ -4,6 +4,7 @@ import { GitHubProvider } from './github'
 import { MooncellProvider } from './mooncell'
 import { OpenCollectiveProvider } from './opencollective'
 import { PatreonProvider } from './patreon'
+import { PolarProvider } from './polar'
 
 export * from './github'
 
@@ -12,6 +13,7 @@ export const ProvidersMap = {
   patreon: PatreonProvider,
   opencollective: OpenCollectiveProvider,
   afdian: AfdianProvider,
+  polar: PolarProvider,
   mooncell: MooncellProvider,
 }
 
@@ -28,6 +30,9 @@ export function guessProviders(config: SponsorkitConfig) {
 
   if (config.afdian && config.afdian.userId && config.afdian.token)
     items.push('afdian')
+
+  if (config.polar && config.polar.token)
+    items.push('polar')
 
   if (config.mooncell && config.mooncell.path)
     items.push('mooncell')
