@@ -39,6 +39,7 @@ export function loadEnv(): Partial<SponsorkitConfig> {
     },
     polar: {
       token: process.env.SPONSORKIT_POLAR_TOKEN || process.env.POLAR_TOKEN,
+      organization: process.env.SPONSORKIT_POLAR_ORGANIZATION || process.env.POLAR_ORGANIZATION,
     },
     outputDir: process.env.SPONSORKIT_DIR,
   }
