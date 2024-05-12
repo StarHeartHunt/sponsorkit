@@ -169,6 +169,16 @@ export interface ProvidersConfig {
      */
     exechangeRate?: number
     /**
+     * Include one-time purchases
+     * @default true
+     */
+    includePurchases?: boolean
+    /**
+     * One-time purchase effectivity period in days
+     * @default 30
+     */
+    purchaseEffectivity?: number
+    /**
      * Afdian Web Token got from document.cookie.
      *
      * Will read from `SPONSORKIT_AFDIAN_TOKEN` environment variable if not set.
