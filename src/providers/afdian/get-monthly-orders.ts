@@ -85,10 +85,8 @@ export async function fetchAfdianMonthlySponsors(
   const processed = Object.entries(sponsors).map(([userId, userData]): Sponsorship => {
     let name = userData.name
     if (name.startsWith('爱发电用户_'))
-      name = userData.id.slice(0, 5)
-    let avatarUrl = userData.avatar
-    if (avatarUrl.startsWith('https://pic1.afdiancdn.com/default/avatar/avatar-'))
-      avatarUrl = ''
+      name = userData.name.slice(6)
+    const avatarUrl = userData.avatar
 
     return {
       sponsor: {
